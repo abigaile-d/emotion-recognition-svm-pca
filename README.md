@@ -189,3 +189,69 @@ For identity recognition, the best result is when SVM is used with dimensionalit
 
 <img src="https://user-images.githubusercontent.com/90839613/134003540-8a476750-bdd5-4aed-b8c9-2a3cfc9afaec.png" width=450>
 
+<h2>Scripts / Usage</h2>
+
+<ol>
+<li>csv2libsvm.r
+  <ul>
+  <li>converts train.csv to libsvm format
+  <li>output is emotion_dataset and identity_dataset
+  </ul>
+<li>pix2img.r
+  <ul>
+  <li>converts the pixels given in train.csv to jpeg format for visualization
+  <li>created in 4 directories: emo_train, emo_test, ide_train, ide_test
+  </ul>
+<li>pca_train.r
+  <ul>
+  <li>applies Principal Components Analysis on the training dataset
+  <li>also selects top K=300 eigenfaces and creates average Ω per class (the average
+transformed image per class) : will be used for distance classification
+  <li>! NOTE: there is a “CURR” variable defined in the first line of the script.
+Possible values are “emo” and “ide”. The value of this variable should be changed
+when training for emotion recognition and identity recognition, respectively.
+  </ul>
+<li>pca_train_image.r
+  <ul>
+  <li>recreates the following as jpeg images for visualization: a) average face of the training set, b) all eigenfaces, c) average class faces recreated in terms of top K-300 eigenfaces
+  <li>created in 4 directories: emo_eigenfaces, emo_class, ide_eigenfaces, ide_class (depends on the value of CURR)
+  <li>! NOTE: this should be run only after running pca_train.r since this script is dependent on the variables of the previous script
+  </ul>
+<li>pca_dim.r
+  <ul>
+  <li>creates new libsvm files with features in reduced dimensions (dim = 100 to 1000, 10 files per set)
+  <li>! NOTE: there is a “CURRSET” variable defined in the first line of the script.
+Possible values are “train” and “test”. Change to create reduced trainset file and reduced testset file respectively
+  <li>! NOTE: this should be run only after running pca_train.r for creating training set, or pca_predict.r for creating reduced testing set, since is dependent on the variables of the previous script
+  </ul>
+<li>pca_dim_image.r
+  <ul>
+  <li>recreates reduced images of 100 and 1000 dimensions for comparison and visualization
+  <li>created in directories: emo_reduced, ide_reduced
+  <li>! NOTE: this should be run only after running pca_dim.r reduced this script
+  </ul>
+<li>pca_predict.r
+  <ul>
+  <li>predicts new images (from test set) based on distance classifiers
+  <li>output are emotion_prediction.csv and identity_prediction.csv
+  <li>! NOTE: this should be run only when pca_train.r has been previously executed
+  </ul>
+<li>pca_predict_image.r
+  <ul>
+  <li>recreates image prediction of the test image for visualization
+  <li>! NOTE: this should be run only after running pca_predict.
+  </ul>
+</ol>
+
+Third-party scripts used:
+
+<ol>
+<li>subset.py from libSVM tools
+  <ul>
+  <li>used to divide dataset into 50% training set and 50% test set
+  </ul>
+<li>grid.py from libSVM tools
+  <ul>
+  <li>used to run grid-search with cross-validation
+  </ul>
+</ol>
